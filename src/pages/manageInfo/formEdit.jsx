@@ -75,7 +75,7 @@ function FormEdit({ record, fetchApi }) {
             layout="vertical"
           >
             <div className="row">
-              <div className="col-6">
+              <div className="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
                 <Form.Item
                   label="Tên gia chủ"
                   name="homeowners"
@@ -89,7 +89,7 @@ function FormEdit({ record, fetchApi }) {
                   <Input placeholder="Nhập tên gia chủ..." />
                 </Form.Item>
               </div>
-              <div className="col-6">
+              <div className="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
                 <Form.Item
                   label="Năm sinh gia chủ"
                   name="age"
@@ -107,12 +107,12 @@ function FormEdit({ record, fetchApi }) {
               </div>
             </div>
             <div className="row">
-              <div className="col-6">
+              <div className="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
                 <Form.Item label="Tên vợ gia chủ" name="wife_homeowners">
                   <Input placeholder="Nhập tên vợ gia chủ..." />
                 </Form.Item>
               </div>
-              <div className="col-6">
+              <div className="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
                 <Form.Item label="Năm sinh vợ gia chủ" name="wife_age">
                   <InputNumber style={{ width: "100%" }} min={1} />
                 </Form.Item>
@@ -140,44 +140,48 @@ function FormEdit({ record, fetchApi }) {
                     const { key, name } = field;
                     return (
                       <div key={key} className="row align-items-center gx-2">
-                        <div className="col-4">
-                          <Form.Item
-                            name={[name, "name"]}
-                            label={`Tên con ${index + 1}`}
-                            validateTrigger={["onChange", "onBlur"]}
-                            rules={[
-                              {
-                                required: true,
-                                whitespace: true,
-                                message: "Tên/Tuổi con gia chủ",
-                              },
-                            ]}
-                          >
-                            <Input placeholder="Nhập tên..." />
-                          </Form.Item>
-                        </div>
-                        <div className="col-4">
-                          <Form.Item
-                            label={`Năm sinh con ${index + 1}`}
-                            name={[name, "year"]}
-                            validateTrigger={["onChange", "onBlur"]}
-                            rules={[
-                              {
-                                validator: (_, value) =>
-                                  value > 0
-                                    ? Promise.resolve()
-                                    : Promise.reject(
-                                        new Error("Năm sinh lớn hơn 0")
-                                      ),
-                              },
-                            ]}
-                          >
-                            <InputNumber
-                              style={{ width: "100%" }}
-                              min={1}
-                              placeholder="Nhập năm sinh..."
-                            />
-                          </Form.Item>
+                        <div className="col-8">
+                          <div className="row">
+                            <div className="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+                              <Form.Item
+                                name={[name, "name"]}
+                                label={`Tên con ${index + 1}`}
+                                validateTrigger={["onChange", "onBlur"]}
+                                rules={[
+                                  {
+                                    required: true,
+                                    whitespace: true,
+                                    message: "Tên/Tuổi con gia chủ",
+                                  },
+                                ]}
+                              >
+                                <Input placeholder="Nhập tên..." />
+                              </Form.Item>
+                            </div>
+                            <div className="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+                              <Form.Item
+                                label={`Năm sinh con ${index + 1}`}
+                                name={[name, "year"]}
+                                validateTrigger={["onChange", "onBlur"]}
+                                rules={[
+                                  {
+                                    validator: (_, value) =>
+                                      value > 0
+                                        ? Promise.resolve()
+                                        : Promise.reject(
+                                            new Error("Năm sinh lớn hơn 0")
+                                          ),
+                                  },
+                                ]}
+                              >
+                                <InputNumber
+                                  style={{ width: "100%" }}
+                                  min={1}
+                                  placeholder="Nhập năm sinh..."
+                                />
+                              </Form.Item>
+                            </div>
+                          </div>
                         </div>
 
                         <div className="col-4">
