@@ -53,7 +53,7 @@ function AddInfo() {
           <Spin spinning={loading}>
             <Form name={`add-info`} onFinish={onFinish} layout="vertical">
               <div className="row">
-                <div className="col-6">
+                <div className="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
                   <Form.Item
                     label="Tên gia chủ"
                     name="homeowners"
@@ -67,7 +67,7 @@ function AddInfo() {
                     <Input placeholder="Nhập tên gia chủ..." />
                   </Form.Item>
                 </div>
-                <div className="col-6">
+                <div className="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
                   <Form.Item
                     label="Năm sinh gia chủ"
                     name="age"
@@ -85,12 +85,12 @@ function AddInfo() {
                 </div>
               </div>
               <div className="row">
-                <div className="col-6">
+                <div className="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
                   <Form.Item label="Tên vợ gia chủ" name="wife_homeowners">
                     <Input placeholder="Nhập tên vợ gia chủ..." />
                   </Form.Item>
                 </div>
-                <div className="col-6">
+                <div className="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
                   <Form.Item label="Năm sinh vợ gia chủ" name="wife_age">
                     <InputNumber style={{ width: "100%" }} min={1} />
                   </Form.Item>
