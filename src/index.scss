@@ -1,0 +1,219 @@
+@import "~bootstrap/scss/bootstrap";
+
+/*
+	HTML5 Reset :: style.css
+	----------------------------------------------------------
+	We have learned much from/been inspired by/taken code where offered from:
+
+	Eric Meyer					:: https://meyerweb.com
+	HTML5 Doctor				:: https://html5doctor.com
+	and the HTML5 Boilerplate	:: https://html5boilerplate.com
+
+-------------------------------------------------------------------------------*/
+
+/* Let's default this puppy out
+-------------------------------------------------------------------------------*/
+@import url("https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap");
+
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+*  body #root{
+	font-family: "Inter", sans-serif;
+	font-weight: 500;
+  
+}
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+  display: block;
+}
+body {
+  line-height: 1;
+}
+ol,
+ul {
+  list-style: none;
+}
+blockquote,
+q {
+  quotes: none;
+}
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+  content: "";
+  content: none;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+a {
+  text-decoration: none;
+}
+
+
+.button-all{
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 5px;
+  border-radius: 5px;
+  cursor: pointer;
+  color: #fff;
+  &.button-remove{
+    background: red;
+    &:hover{
+      background: rgb(226, 0, 0);
+    }
+
+  }
+  &.button-edit{
+    background: rgb(10, 202, 10);
+    &:hover{
+      background: rgb(5, 216, 5);
+    }
+  }
+}
+.title-heading{
+  h1{
+    font-size: 25px;
+    font-weight: 600;
+    background: #000;
+    color: #fff;
+    padding: 10px;
+    text-align: center;
+    border-radius: 5px;
+  }
+}
+.button-submit{
+  background: #000;
+  font-weight: 600;
+  transition: all 0.4s;
+  width: 100%;
+ 
+  &:hover{
+    background: #fff !important;
+    color: #000 !important;
+    border: 1px solid #000;
+  }
+}
+.button-dowload{
+  outline: none;
+  padding: 10px;
+  background: red;
+  font-size: 20px;
+  font-weight: 600;
+  border-radius: 5px;
+  color: #fff;
+  width: 100%;
+  border: none;
+  transition: all 0.4s ease-in-out;
+  &:hover{
+    color: #fff;
+    background: rgb(209, 0, 0);
+   
+  }
+}
