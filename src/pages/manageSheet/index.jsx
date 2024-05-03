@@ -122,9 +122,9 @@ function ManageSheet() {
             </div>
           </ConfigProvider>
           <div className="table-sheet">
-            {records.length > 0 && (
+          
               <Table rowKey={"_id"} columns={columns} dataSource={records} />
-            )}
+           
           </div>
         </div>
       </div>
