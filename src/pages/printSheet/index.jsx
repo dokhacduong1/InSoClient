@@ -1,4 +1,4 @@
-import { Button, ConfigProvider, DatePicker, Form, Select } from "antd";
+import { Button, ConfigProvider, DatePicker, Form, Select, Spin } from "antd";
 import { useEffect, useState } from "react";
 
 import { printSheet } from "../../services/client/sheetApi";
@@ -11,6 +11,7 @@ import { fetchApi } from "./js/fetchApi";
 dayjs.locale("vi");
 function PrintSheet() {
   const [recordInfo, setRecordInfo] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [recordSheet, setRecordSheet] = useState([]);
   const [linkDownload, setLinkDownload] = useState("");
   const [nameFile, setNameFile] = useState("");
@@ -21,30 +22,36 @@ function PrintSheet() {
   }, []);
 
   const handleFinish = async (values) => {
-    values.date = values.date.toISOString();
+    try {
+      setLoading(true);
+      values.date = values.date.toISOString();
+      const result = await printSheet(values);
+      if (result.code === 200) {
+        const binaryString = window.atob(result.data);
+        const len = binaryString.length;
+        const bytes = new Uint8Array(len);
+        for (let i = 0; i < len; i++) {
+          bytes[i] = binaryString.charCodeAt(i);
+        }
+        const blob = new Blob([bytes.buffer], {
+          type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        });
+        const url = window.URL.createObjectURL(blob);
+        const checkNameSheet = recordSheet.find(
+          (item) => item.value === values.sheetId
+        );
 
-    const result = await printSheet(values);
-    if (result.code === 200) {
-      const binaryString = window.atob(result.data);
-      const len = binaryString.length;
-      const bytes = new Uint8Array(len);
-      for (let i = 0; i < len; i++) {
-        bytes[i] = binaryString.charCodeAt(i);
+        setNameFile(
+          `${checkNameSheet.label} ngày tạo: ${dayjs(new Date()).format(
+            "DD-MM-YYYY"
+          )}.xlsx`
+        );
+        setLinkDownload(url);
       }
-      const blob = new Blob([bytes.buffer], {
-        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-      });
-      const url = window.URL.createObjectURL(blob);
-      const checkNameSheet = recordSheet.find(
-        (item) => item.value === values.sheetId
-      );
-
-      setNameFile(
-        `${checkNameSheet.label} ngày tạo: ${dayjs(new Date()).format(
-          "DD-MM-YYYY"
-        )}.xlsx`
-      );
-      setLinkDownload(url);
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
     }
   };
 
@@ -57,80 +64,82 @@ function PrintSheet() {
         <div className="print-sheet">
           <div className="print-form">
             <ConfigProvider locale={locale}>
-              <Form name="print-form" onFinish={handleFinish}>
-                <Form.Item
-                  label="Chọn danh sách gia chủ"
-                  name="listIdInfo"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Vui lòng chọn gia chủ",
-                    },
-                  ]}
-                >
-                  <Select
-                    mode="multiple"
-                    options={recordInfo}
-                    showSearch
-                    placeholder="Chọn gia chủ"
-                    optionFilterProp="children"
-                    filterOption={(input, option) =>
-                      removeAccents(option.label)
-                        .toLowerCase()
-                        .includes(removeAccents(input).toLowerCase()) ||
-                      removeAccents(option.value)
-                        .toLowerCase()
-                        .includes(removeAccents(input).toLowerCase())
-                    }
-                  />
-                </Form.Item>
-                <Form.Item
-                  label="Chọn sớ cúng"
-                  name="sheetId"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Vui lòng chọn sớ",
-                    },
-                  ]}
-                >
-                  <Select
-                    options={recordSheet}
-                    showSearch
-                    placeholder="Chọn sớ"
-                    optionFilterProp="children"
-                    filterOption={(input, option) =>
-                      removeAccents(option.label)
-                        .toLowerCase()
-                        .includes(removeAccents(input).toLowerCase()) ||
-                      removeAccents(option.value)
-                        .toLowerCase()
-                        .includes(removeAccents(input).toLowerCase())
-                    }
-                  />
-                </Form.Item>
-                <Form.Item
-                  label="Chọn ngày cúng"
-                  name="date"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Vui lòng chọn ngày",
-                    },
-                  ]}
-                >
-                  <DatePicker format={dateFormat} />
-                </Form.Item>
-                <Form.Item>
-                  <Button
-                    className="button-submit"
-                    type="primary"
-                    htmlType="submit"
+              <Spin spinning={loading}>
+                <Form name="print-form" onFinish={handleFinish}>
+                  <Form.Item
+                    label="Chọn danh sách gia chủ"
+                    name="listIdInfo"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Vui lòng chọn gia chủ",
+                      },
+                    ]}
                   >
-                    Bắt Đầu Tạo File Excel
-                  </Button>
-                </Form.Item>
-              </Form>
+                    <Select
+                      mode="multiple"
+                      options={recordInfo}
+                      showSearch
+                      placeholder="Chọn gia chủ"
+                      optionFilterProp="children"
+                      filterOption={(input, option) =>
+                        removeAccents(option.label)
+                          .toLowerCase()
+                          .includes(removeAccents(input).toLowerCase()) ||
+                        removeAccents(option.value)
+                          .toLowerCase()
+                          .includes(removeAccents(input).toLowerCase())
+                      }
+                    />
+                  </Form.Item>
+                  <Form.Item
+                    label="Chọn sớ cúng"
+                    name="sheetId"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Vui lòng chọn sớ",
+                      },
+                    ]}
+                  >
+                    <Select
+                      options={recordSheet}
+                      showSearch
+                      placeholder="Chọn sớ"
+                      optionFilterProp="children"
+                      filterOption={(input, option) =>
+                        removeAccents(option.label)
+                          .toLowerCase()
+                          .includes(removeAccents(input).toLowerCase()) ||
+                        removeAccents(option.value)
+                          .toLowerCase()
+                          .includes(removeAccents(input).toLowerCase())
+                      }
+                    />
+                  </Form.Item>
+                  <Form.Item
+                    label="Chọn ngày cúng"
+                    name="date"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Vui lòng chọn ngày",
+                      },
+                    ]}
+                  >
+                    <DatePicker format={dateFormat} />
+                  </Form.Item>
+                  <Form.Item>
+                    <Button
+                      className="button-submit"
+                      type="primary"
+                      htmlType="submit"
+                    >
+                      Bắt Đầu Tạo File Excel
+                    </Button>
+                  </Form.Item>
+                </Form>
+              </Spin>
             </ConfigProvider>
           </div>
           {linkDownload && nameFile && (

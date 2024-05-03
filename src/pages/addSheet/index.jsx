@@ -1,13 +1,17 @@
-import { Form, Input, Upload, Button, message } from "antd";
+import { Form, Input, Upload, Button, message, Spin } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import { createSheet } from "../../services/client/sheetApi";
+import { useState } from "react";
 
 function AddSheet() {
   const [messageApi, contextHolder] = message.useMessage();
+  const [loading, setLoading] = useState(false);
   const [form] = Form.useForm();
   const onFinish = async (values) => {
     try {
+      setLoading(true);
       if (!values.file) {
+        setLoading(false);
         return;
       }
       const file = values.file[0].originFileObj;
@@ -35,7 +39,9 @@ function AddSheet() {
           content: "Có lỗi xảy ra",
         });
       }
+      setLoading(false);
     } catch (error) {
+      setLoading(false);
       messageApi.open({
         type: "error",
         content: "Có lỗi xảy ra",
@@ -52,61 +58,67 @@ function AddSheet() {
           <h1>Thêm Sớ</h1>
         </div>
         <div className="add-sheet">
-          <Form
-            form={form}
-            name={`add-info`}
-            onFinish={onFinish}
-            layout="vertical"
-          >
-            <Form.Item
-              rules={[
-                {
-                  required: true,
-                  message: "Vui lòng nhập tên sớ",
-                },
-              ]}
-              name={"title"}
-              label="Tên sớ"
+          <Spin spinning={loading}>
+            <Form
+              form={form}
+              name={`add-info`}
+              onFinish={onFinish}
+              layout="vertical"
             >
-              <Input placeholder="Nhập tên sớ" />
-            </Form.Item>
-            <Form.Item
-              name={"file"}
-              rules={[
-                {
-                  required: true,
-                  message: "Vui lòng chọn file",
-                },
-              ]}
-              label="Chọn file sớ"
-              valuePropName="fileList"
-              getValueFromEvent={(e) =>
-                Array.isArray(e) ? e : e && e.fileList
-              }
-            >
-              <Upload
-                beforeUpload={(file) => {
-                  const isExcel =
-                    file.type ===
-                      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ||
-                    file.type === "application/vnd.ms-excel";
-                  if (!isExcel) {
-                    message.error(
-                      "Thí chủ không thể upload file khác ngoài excel!"
-                    );
-                  }
-                  return isExcel;
-                }}
+              <Form.Item
+                rules={[
+                  {
+                    required: true,
+                    message: "Vui lòng nhập tên sớ",
+                  },
+                ]}
+                name={"title"}
+                label="Tên sớ"
               >
-                <Button icon={<UploadOutlined />}>Click to Upload</Button>
-              </Upload>
-            </Form.Item>
-            <Form.Item>
-              <Button className="button-submit" type="primary" htmlType="submit">
-                Thêm sớ
-              </Button>
-            </Form.Item>
-          </Form>
+                <Input placeholder="Nhập tên sớ" />
+              </Form.Item>
+              <Form.Item
+                name={"file"}
+                rules={[
+                  {
+                    required: true,
+                    message: "Vui lòng chọn file",
+                  },
+                ]}
+                label="Chọn file sớ"
+                valuePropName="fileList"
+                getValueFromEvent={(e) =>
+                  Array.isArray(e) ? e : e && e.fileList
+                }
+              >
+                <Upload
+                  beforeUpload={(file) => {
+                    const isExcel =
+                      file.type ===
+                        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ||
+                      file.type === "application/vnd.ms-excel";
+                    if (!isExcel) {
+                      message.error(
+                        "Thí chủ không thể upload file khác ngoài excel!"
+                      );
+                    }
+                    return isExcel;
+                  }}
+                >
+                  <Button icon={<UploadOutlined />}>Click to Upload</Button>
+                </Upload>
+              </Form.Item>
+              <Form.Item>
+                <Button
+                  className="button-submit"
+                  type="primary"
+                  htmlType="submit"
+                >
+                  Thêm sớ
+                </Button>
+              </Form.Item>
+            </Form>
+          </Spin>
         </div>
       </div>
     </div>
