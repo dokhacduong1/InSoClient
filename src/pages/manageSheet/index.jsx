@@ -6,7 +6,6 @@ import { ConfigProvider, Input, Space, Table, message } from "antd";
 import FormEdit from "./formEdit";
 import { FaRegTrashAlt } from "react-icons/fa";
 
-
 function ManageSheet() {
   const [keyword, setKeyword] = useState("");
   const [records, setRecords] = useState([]);
@@ -123,7 +122,9 @@ function ManageSheet() {
             </div>
           </ConfigProvider>
           <div className="table-sheet">
-            <Table rowKey={"_id"} columns={columns} dataSource={records} />
+            {records.length > 0 && (
+              <Table rowKey={"_id"} columns={columns} dataSource={records} />
+            )}
           </div>
         </div>
       </div>
