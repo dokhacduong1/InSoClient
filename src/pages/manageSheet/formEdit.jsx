@@ -1,4 +1,4 @@
-import { Button, Form, Input, Modal, Spin, Upload, message } from "antd";
+import { Button, Form, Input, InputNumber, Modal, Spin, Upload, message } from "antd";
 import { FaRegEdit } from "react-icons/fa";
 import { UploadOutlined } from "@ant-design/icons";
 import { handleCancel, handleUpdateSheet } from "../../helpers/modelHelper";
@@ -32,6 +32,8 @@ function FormEdit({ record, fetchApi }) {
       const formData = new FormData();
       formData.append("file", values.file[0].originFileObj);
       formData.append("title", values.title);
+      formData.append("positionAddress", values.positionAddress);
+      formData.append("positionUserInfo", values.positionUserInfo);
       formData.append("_id", record._id);
       const result = await editSheet(formData);
       if (result.code === 200) {
@@ -97,6 +99,30 @@ function FormEdit({ record, fetchApi }) {
             >
               <Input placeholder="Nhập tên sớ" />
             </Form.Item>
+            <Form.Item
+                rules={[
+                  {
+                    required: true,
+                    message: "Vui lòng nhập vị trí thông tin người dùng",
+                  },
+                ]}
+                name={"positionUserInfo"}
+                label="Vị trí đặt thông tin người dùng"
+              >
+                <InputNumber min={1} />
+              </Form.Item>
+              <Form.Item
+                rules={[
+                  {
+                    required: true,
+                    message: "Vui lòng nhập vị trí địa chỉ",
+                  },
+                ]}
+                name={"positionAddress"}
+                label="Vị trí đặt địa chỉ"
+              >
+                <InputNumber min={1} />
+              </Form.Item>
             <Form.Item
               name={"file"}
               rules={[

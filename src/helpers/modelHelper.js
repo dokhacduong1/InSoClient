@@ -64,7 +64,8 @@ export const handleUpdateSheet = (form, setIsModalOpen, record) => {
     //tạo một object rỗng để lưu giá trị của form
     const defaultValue = {
        title: record.title,
-
+       positionAddress: record.positionAddress,
+       positionUserInfo: record.positionUserInfo,
     };
 
 

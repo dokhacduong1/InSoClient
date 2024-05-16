@@ -1,4 +1,4 @@
-import { Form, Input, Upload, Button, message, Spin } from "antd";
+import { Form, Input, Upload, Button, message, Spin, InputNumber } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import { createSheet } from "../../services/client/sheetApi";
 import { useState } from "react";
@@ -26,6 +26,8 @@ function AddSheet() {
       const formData = new FormData();
       formData.append("file", values.file[0].originFileObj);
       formData.append("title", values.title);
+      formData.append("positionAddress", values.positionAddress);
+      formData.append("positionUserInfo", values.positionUserInfo);
       const result = await createSheet(formData);
       if (result.code === 200) {
         form.resetFields();
@@ -76,6 +78,30 @@ function AddSheet() {
                 label="Tên sớ"
               >
                 <Input placeholder="Nhập tên sớ" />
+              </Form.Item>
+              <Form.Item
+                rules={[
+                  {
+                    required: true,
+                    message: "Vui lòng nhập vị trí thông tin người dùng",
+                  },
+                ]}
+                name={"positionUserInfo"}
+                label="Vị trí đặt thông tin người dùng"
+              >
+                <InputNumber min={1} />
+              </Form.Item>
+              <Form.Item
+                rules={[
+                  {
+                    required: true,
+                    message: "Vui lòng nhập vị trí địa chỉ",
+                  },
+                ]}
+                name={"positionAddress"}
+                label="Vị trí đặt địa chỉ"
+              >
+                <InputNumber min={1} />
               </Form.Item>
               <Form.Item
                 name={"file"}

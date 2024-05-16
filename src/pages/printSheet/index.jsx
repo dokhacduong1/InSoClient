@@ -37,14 +37,12 @@ function PrintSheet() {
           type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
         });
         const url = window.URL.createObjectURL(blob);
-        const checkNameSheet = recordSheet.find(
-          (item) => item.value === values.sheetId
-        );
+    
 
         setNameFile(
-          `${checkNameSheet.label} ngày tạo: ${dayjs(new Date()).format(
+          `Sớ in ngày tạo: ${dayjs(new Date()).format(
             "DD-MM-YYYY"
-          )}.xlsx`
+          )} Thời gian ${dayjs(new Date()).format("HH:mm:ss")}.xlsx`
         );
         setLinkDownload(url);
       }
@@ -103,6 +101,7 @@ function PrintSheet() {
                     ]}
                   >
                     <Select
+                     mode="multiple"
                       options={recordSheet}
                       showSearch
                       placeholder="Chọn sớ"
