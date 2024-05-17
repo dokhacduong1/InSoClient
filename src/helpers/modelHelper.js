@@ -61,11 +61,14 @@ export const handleUpdateDataInfo = (form, setIsModalOpen, record) => {
 };
 
 export const handleUpdateSheet = (form, setIsModalOpen, record) => {
+    console.log(record)
+    const positionSurname = `${record.positionSurname?.column}/${record.positionSurname?.row}`
     //tạo một object rỗng để lưu giá trị của form
     const defaultValue = {
        title: record.title,
        positionAddress: record.positionAddress,
        positionUserInfo: record.positionUserInfo,
+       positionSurname:positionSurname
     };
 
 
