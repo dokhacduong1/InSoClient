@@ -7,6 +7,7 @@ import { useState } from "react";
 function AddInfo() {
   const [messageApi, contextHolder] = message.useMessage();
   const [loading, setLoading] = useState(false);
+  const [form] = Form.useForm();
   const onFinish = async (values) => {
     try {
       setLoading(true);
@@ -21,6 +22,7 @@ function AddInfo() {
 
       const result = await createInfo(cleanedValues);
       if (result.code === 200) {
+        form.resetFields();
         messageApi.open({
           type: "success",
           content: result.success,
@@ -51,7 +53,7 @@ function AddInfo() {
         </div>
         <div className="add-info ">
           <Spin spinning={loading}>
-            <Form name={`add-info`} onFinish={onFinish} layout="vertical">
+            <Form form={form} name={`add-info`} onFinish={onFinish} layout="vertical">
               <div className="row">
                 <div className="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
                   <Form.Item

@@ -10,6 +10,17 @@ function AddSheet() {
   const onFinish = async (values) => {
     try {
       setLoading(true);
+      const regex = /^\d+\/\d+$/;
+      if (!regex.test(values?.positionSurname)) {
+        messageApi.open({
+          type: "error",
+          content: `Định dạng không hợp lệ. Vui lòng nhập lại số hàng/số cột theo định dạng "x/y"`,
+        });
+        setLoading(false);
+        return;
+      }
+     
+
       if (!values.file) {
         setLoading(false);
         return;
@@ -28,6 +39,7 @@ function AddSheet() {
       formData.append("title", values.title);
       formData.append("positionAddress", values.positionAddress);
       formData.append("positionUserInfo", values.positionUserInfo);
+      formData.append("positionSurname", values?.positionSurname);
       const result = await createSheet(formData);
       if (result.code === 200) {
         form.resetFields();
@@ -104,6 +116,19 @@ function AddSheet() {
                 <InputNumber min={1} />
               </Form.Item>
               <Form.Item
+                rules={[
+                  {
+                    required: true,
+                    message: "Vui lòng nhập vị trí đặt thượng phụng",
+                  },
+                ]}
+                name={"positionSurname"}
+                label="Vị trí đặt thượng phụng"
+              >
+                <Input />
+
+              </Form.Item>
+              <Form.Item
                 name={"file"}
                 rules={[
                   {
@@ -121,7 +146,7 @@ function AddSheet() {
                   beforeUpload={(file) => {
                     const isExcel =
                       file.type ===
-                        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ||
+                      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ||
                       file.type === "application/vnd.ms-excel";
                     if (!isExcel) {
                       message.error(

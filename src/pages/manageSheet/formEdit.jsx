@@ -17,13 +17,23 @@ function FormEdit({ record, fetchApi }) {
       if (!values.file) {
         setLoading(false);
         return;
-        
+
       }
-      console.log(values);
+      const regex = /^\d+\/\d+$/;
+      if (!regex.test(values?.positionSurname)) {
+        messageApi.open({
+          type: "error",
+          content: `Định dạng không hợp lệ. Vui lòng nhập lại số hàng/số cột theo định dạng "x/y"`,
+        });
+        setLoading(false);
+        return;
+      }
+
+
       const file = values.file[0].originFileObj;
       const isExcel =
         file.type ===
-          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ||
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ||
         file.type === "application/vnd.ms-excel";
       if (!isExcel) {
         message.error("Thí chủ không thể upload file khác ngoài excel!");
@@ -34,6 +44,7 @@ function FormEdit({ record, fetchApi }) {
       formData.append("title", values.title);
       formData.append("positionAddress", values.positionAddress);
       formData.append("positionUserInfo", values.positionUserInfo);
+      formData.append("positionSurname", values?.positionSurname);
       formData.append("_id", record._id);
       const result = await editSheet(formData);
       if (result.code === 200) {
@@ -100,29 +111,42 @@ function FormEdit({ record, fetchApi }) {
               <Input placeholder="Nhập tên sớ" />
             </Form.Item>
             <Form.Item
-                rules={[
-                  {
-                    required: true,
-                    message: "Vui lòng nhập vị trí thông tin người dùng",
-                  },
-                ]}
-                name={"positionUserInfo"}
-                label="Vị trí đặt thông tin người dùng"
-              >
-                <InputNumber min={1} />
-              </Form.Item>
-              <Form.Item
-                rules={[
-                  {
-                    required: true,
-                    message: "Vui lòng nhập vị trí địa chỉ",
-                  },
-                ]}
-                name={"positionAddress"}
-                label="Vị trí đặt địa chỉ"
-              >
-                <InputNumber min={1} />
-              </Form.Item>
+              rules={[
+                {
+                  required: true,
+                  message: "Vui lòng nhập vị trí thông tin người dùng",
+                },
+              ]}
+              name={"positionUserInfo"}
+              label="Vị trí đặt thông tin người dùng"
+            >
+              <InputNumber min={1} />
+            </Form.Item>
+            <Form.Item
+              rules={[
+                {
+                  required: true,
+                  message: "Vui lòng nhập vị trí địa chỉ",
+                },
+              ]}
+              name={"positionAddress"}
+              label="Vị trí đặt địa chỉ"
+            >
+              <InputNumber min={1} />
+            </Form.Item>
+            <Form.Item
+              rules={[
+                {
+                  required: true,
+                  message: "Vui lòng nhập vị trí đặt thượng phụng",
+                },
+              ]}
+              name={"positionSurname"}
+              label="Vị trí đặt thượng phụng"
+            >
+              <Input />
+
+            </Form.Item>
             <Form.Item
               name={"file"}
               rules={[
@@ -141,7 +165,7 @@ function FormEdit({ record, fetchApi }) {
                 beforeUpload={(file) => {
                   const isExcel =
                     file.type ===
-                      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ||
+                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ||
                     file.type === "application/vnd.ms-excel";
                   if (!isExcel) {
                     message.error(
